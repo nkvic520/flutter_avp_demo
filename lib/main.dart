@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutteravpdemo/video_player.dart';
 
@@ -48,6 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Key videoPlayerKey = UniqueKey();
   String url =
       "http://vt1.doubanio.com/202004011618/8f34039bc2a8b9732ac3014cabaf38fb/view/movie/M/402320974.mp4";
+  String title = "鬼怪";
+  bool fullScreen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,33 +63,41 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         body: CustomScrollView(
       slivers: <Widget>[
-        SliverAppBar(
-          title: Text("切换视频"),
-        ),
+        !fullScreen
+            ? SliverAppBar(
+                title: Text("切换视频"),
+              )
+            : SliverToBoxAdapter(),
         SliverToBoxAdapter(
-          child: Container(
-            height: 200,
             child: VideoPlayerG(
-              title: "鬼怪",
-              videoUrl: url,
-              key: videoPlayerKey,
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-            child: InkWell(
-                onTap: () {
-                  setState(() {
-                    videoPlayerKey = UniqueKey();
-                    url =
-                        "http://vt1.doubanio.com/202005091443/a5325a32796a6c9fb05e9cfc32534fbf/view/movie/M/402480072.mp4";
-                  });
-                },
-                child: Container(
-                  height: 200,
-                  alignment: Alignment.center,
-                  child: Text("切换", style: TextStyle(fontSize: 20)),
-                )))
+          title: title,
+          videoUrl: url,
+          key: videoPlayerKey,
+          onfullscreen: (value) {
+            setState(() {
+              fullScreen = value;
+            });
+          },
+        )),
+        !fullScreen
+            ? SliverToBoxAdapter(
+                child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        videoPlayerKey = UniqueKey();
+                        url =
+                            "http://vt1.doubanio.com/202005091443/a5325a32796a6c9fb05e9cfc32534fbf/view/movie/M/402480072.mp4";
+                        title = "天气之子";
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(100),
+                      alignment: Alignment.center,
+                      child: Text("切换",
+                          style: TextStyle(
+                              fontSize: 20, color: Colors.lightBlueAccent)),
+                    )))
+            : SliverToBoxAdapter()
       ],
     ));
   }

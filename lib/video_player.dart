@@ -11,6 +11,7 @@ class VideoPlayerG extends StatefulWidget {
   final int startPosition;
   final VideoCallback<VideoPlayerController> oninit;
   final VideoCallback<VideoPlayerValue> onpause;
+  final VideoCallback<bool> onfullscreen;
 
   VideoPlayerG(
       {Key key,
@@ -20,7 +21,8 @@ class VideoPlayerG extends StatefulWidget {
       this.onpop,
       this.startPosition,
       this.oninit,
-      this.onpause})
+      this.onpause,
+      this.onfullscreen})
       : super(key: key);
 
   @override
@@ -76,12 +78,12 @@ class _VideoPlayerState extends State<VideoPlayerG> {
         videoTopBarStyle: VideoTopBarStyle(
           show: true,
           //是否显示
-          height: 30,
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          height: 60,
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           barBackgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
           popIcon: Icon(
             Icons.arrow_back,
-            size: 25,
+            size: 20,
             color: Colors.white,
           ),
           contents: [
@@ -151,10 +153,10 @@ class _VideoPlayerState extends State<VideoPlayerG> {
           // barBackgroundColor: Colors.blue,
 
           ///添加边距
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
 
           ///设置控制拦的高度，默认为30，如果图标设置过大但是高度不够就会出现图标被裁剪的现象
-          height: 30,
+          height: 60,
 
           /// 自定义进度条样式
           // progressStyle: VideoProgressStyle(
@@ -175,32 +177,39 @@ class _VideoPlayerState extends State<VideoPlayerG> {
           //     ),
 
           /// 更改进度栏的播放按钮
-          playIcon: Icon(Icons.play_arrow, color: Colors.white, size: 30),
+          playIcon: Icon(Icons.play_arrow, color: Colors.white, size: 20),
 
           /// 更改进度栏的暂停按钮
           pauseIcon: Icon(
             Icons.pause,
             color: Colors.white,
-            size: 30,
+            size: 20,
           ),
 
           /// 更改进度栏的全屏按钮
           fullscreenIcon: Icon(
             Icons.fullscreen,
-            size: 30,
+            size: 20,
             color: Colors.white,
           ),
 
           /// 更改进度栏的退出全屏按钮
           fullscreenExitIcon: Icon(
             Icons.fullscreen_exit,
-            size: 30,
+            size: 20,
             color: Colors.red,
+          ),
+
+          nextIcon: Icon(
+            Icons.skip_next,
+            size: 20,
+            color: Colors.white,
           ),
 
           /// 决定控制栏的元素以及排序，示例见上方图3
           itemList: [
             "play",
+            "next",
             "position-time",
             //当前播放时间
             "progress",
@@ -209,11 +218,13 @@ class _VideoPlayerState extends State<VideoPlayerG> {
             "duration-time",
             //视频总时长
             // "time",//格式：当前时间/视频总时长
-            "fullscreen"
+            "fullscreen", "speed",
+            "definition",
           ],
         ),
       ),
       onended: widget.onCompleted,
+      onfullscreen: widget.onfullscreen,
     );
   }
 }

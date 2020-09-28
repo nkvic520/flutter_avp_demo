@@ -1,4 +1,4 @@
-# flutteravpdemo
+# flutter_avp_demo
 
 A new Flutter application.
 
